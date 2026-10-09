@@ -1,21 +1,26 @@
 const express = require("express");
-const path = require("node:path");
 const app = express();
+const path = require("node:path");
+const authorRouter = require("./routes/authorRouter");
+const bookRouter = require("./routes/bookRouter");
+const indexRouter = require("./routes/indexRouter");
 const PORT = 3000;
-
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
-});
 
 app.get("/about", (req, res) => {
   res.sendFile(path.join(__dirname, "about.html"));
 });
-
 app.get("/contact-me", (req, res) => {
   res.sendFile(path.join(__dirname, "contact-me.html"));
 });
 
+app.post("/contact-me", (req, res) => res.send("Contact received"));
+
+app.use("/authors", authorRouter);
+app.use("/books", bookRouter);
+app.use("/", indexRouter);
 app.use((req, res) => res.sendFile(path.join(__dirname, "404.html")));
+
+//__dirname refers to the directory containing the JavaScript file you're currently writing
 
 app.listen(PORT, (error) => {
   if (error) {
