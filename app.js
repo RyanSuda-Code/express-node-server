@@ -19,8 +19,11 @@ app.use("/authors", authorRouter);
 app.use("/books", bookRouter);
 app.use("/", indexRouter);
 app.use((req, res) => res.sendFile(path.join(__dirname, "404.html")));
-
 //__dirname refers to the directory containing the JavaScript file you're currently writing
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).send(err);
+});
 
 app.listen(PORT, (error) => {
   if (error) {
@@ -56,4 +59,5 @@ app.listen(PORT, (error) => {
 // NOTE (The Odin Project): Express 5 allows an 'error' argument in app.listen().
 // In Express 4, this argument is undefined, but leaving it here ensures
 // forward-compatibility and won't break your app.
+// app.listen starts the Express server and tells it to listen for incoming HTTP requests on that port.
 */
